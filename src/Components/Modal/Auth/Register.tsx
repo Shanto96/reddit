@@ -88,7 +88,7 @@ const Register: React.FC<RegisterProps> = () => {
         Sign up
       </Button>
       <Flex fontSize="9pt" justifyContent="center">
-        <Text mr={2}> Already Have an account?</Text>
+        <Text mr={2}> Already a redditor?</Text>
         <Text
           color="blue.500"
           fontWeight="700"

@@ -8,10 +8,10 @@ const OAuthButtons: React.FC<OAuthButtonsProps> = () => {
     <Flex direction="column" pb={4} gap={2} width="100%">
       <Button variant="oauth">
         {" "}
-        <Image src="./images/googlelogo.png" height="26px" mr={4} /> Continue with
-        google{" "}
+        <Image src="./images/googlelogo.png" height="26px" mr={4} /> Continue
+        with google{" "}
       </Button>
-      <Button variant="oauth">Use other social account </Button>
+      <Button variant="oauth">Some Other Provider </Button>
     </Flex>
   );
 };

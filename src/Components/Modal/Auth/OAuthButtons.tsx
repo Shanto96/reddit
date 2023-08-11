@@ -1,7 +1,8 @@
 import React from "react";
-import { Flex, Button, Image } from "@chakra-ui/react";
+import { Flex, Button, Image, Text } from "@chakra-ui/react";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
+import { FIREBASE_ERRORS } from "@/firebase/errors";
 
 type OAuthButtonsProps = {};
 
@@ -20,6 +21,11 @@ const OAuthButtons: React.FC<OAuthButtonsProps> = () => {
         with google{" "}
       </Button>
       <Button variant="oauth">Some Other Provider </Button>
+      {error && (
+        <Text fontSize="10pt" color="red" align="center">
+          {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+        </Text>
+      )}
     </Flex>
   );
 };

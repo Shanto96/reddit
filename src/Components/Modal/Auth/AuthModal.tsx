@@ -20,6 +20,7 @@ type AuthModalProps = {};
 
 const AuthModal: React.FC<AuthModalProps> = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
+
   const handleClose = () => {
     setModalState((prev) => ({
       ...prev,

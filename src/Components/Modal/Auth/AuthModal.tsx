@@ -15,6 +15,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import AuthInput from "./AuthInput";
 import OAuthButtons from "./OAuthButtons";
+import ResetPassword from "./resetPassword";
 
 type AuthModalProps = {};
 
@@ -52,12 +53,18 @@ const AuthModal: React.FC<AuthModalProps> = () => {
               width="70%"
             >
               {" "}
-              <OAuthButtons />
-              <Text fontWeight="700" mb={4}>
-                {" "}
-                OR
-              </Text>
-              <AuthInput />
+              {modalState.view === "login" || modalState.view === "signup" ? (
+                <>
+                  <OAuthButtons />
+                  <Text fontWeight="700" mb={4}>
+                    {" "}
+                    OR
+                  </Text>
+                  <AuthInput />
+                </>
+              ) : (
+                <ResetPassword />
+              )}
             </Flex>
           </ModalBody>
         </ModalContent>

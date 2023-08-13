@@ -6,12 +6,15 @@ import { auth } from "@/firebase/clientApp";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModalAtom";
 import { Button } from "@chakra-ui/react";
+import { User } from "firebase/auth";
+import Icons from "./Icons";
 
-type RightContentProps = {};
+type RightContentProps = {
+  user?: User | null;
+};
 
-const RightContent: React.FC<RightContentProps> = () => {
+const RightContent: React.FC<RightContentProps> = ({ user }) => {
   const [signOut, signOutloading, signOutError] = useSignOut(auth);
-  const [user, loading, error] = useAuthState(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
 
   useEffect(() => {
@@ -27,17 +30,7 @@ const RightContent: React.FC<RightContentProps> = () => {
     <>
       <AuthModal />
 
-      {user ? (
-        <Button
-          variant="oauth"
-          onClick={() => signOut()}
-          isLoading={signOutloading}
-        >
-          Log Out
-        </Button>
-      ) : (
-        <AuthButtons />
-      )}
+      {user ? <Icons /> : <AuthButtons />}
     </>
   );
 };

@@ -8,13 +8,13 @@ import { authModalState } from "@/atoms/authModalAtom";
 import { Button } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import Icons from "./Icons";
+import UserManu from "./UserManu";
 
 type RightContentProps = {
   user?: User | null;
 };
 
 const RightContent: React.FC<RightContentProps> = ({ user }) => {
-  const [signOut, signOutloading, signOutError] = useSignOut(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const RightContent: React.FC<RightContentProps> = ({ user }) => {
       <AuthModal />
 
       {user ? <Icons /> : <AuthButtons />}
+      <UserManu user={user} />
     </>
   );
 };

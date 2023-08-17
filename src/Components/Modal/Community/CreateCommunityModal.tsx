@@ -1,3 +1,4 @@
+import { auth, firestore } from "@/firebase/clientApp";
 import {
   Box,
   Button,
@@ -15,7 +16,16 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import {
+  Transaction,
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 
@@ -31,7 +41,9 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   const [name, setName] = useState("");
   const [charRemaining, setCharRemaining] = useState(21);
   const [communityType, setCommunityType] = useState("");
-
+  const [nameError, setNameError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [user] = useAuthState(auth);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 21) return;
     setName(event.target.value);
@@ -42,6 +54,45 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   ) => {
     setCommunityType(event.target.name);
   };
+
+  const handleCreateCommunity = async () => {
+    if (nameError) setNameError("");
+    const format = /[ `!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if (format.test(name) || name.length < 3) {
+      return setNameError(
+        "Community names must be between 3–21 characters, and can only contain letters, numbers, or underscores."
+      );
+    }
+    setLoading(true);
+    try {
+      // await runTransaction(firestore, async (transaction) => {
+      const communityDocRef = await doc(firestore, "communities", name);
+      const communityDoc = await getDoc(communityDocRef);
+      if (communityDoc.exists()) {
+        throw new Error(`Sorry, r/${name} already taken,Try another!`);
+      }
+      //   transaction.set(communityDocRef, {
+      //     creatorId: user?.uid,
+      //     createdAt: serverTimestamp(),
+      //     numberOfMembers: 1,
+      //     privacyType: "public",
+      //   });
+      // });
+
+      await setDoc(communityDocRef, {
+        creatorId: user?.uid,
+        createdAt: serverTimestamp(),
+        numberOfMembers: 1,
+        privacyType: communityType,
+      });
+      setLoading(false);
+    } catch (error: any) {
+      setLoading(false);
+      console.log("handle create community Error", error);
+      setNameError(error.message);
+    }
+  };
+
   return (
     <>
       <Modal isOpen={open} onClose={handleClose} size="lg">
@@ -92,6 +143,9 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               {" "}
               {charRemaining} characters remaining
             </Text>
+            <Text fontSize="9pt" color="red" pt={1}>
+              {nameError}
+            </Text>
             <Box mt={4} mb={4}>
               <Text fontWeight={600} fontSize={15}>
                 Commpunity Type
@@ -132,7 +186,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                 </Checkbox>
                 <Checkbox
                   colorScheme="blue"
-                  name="public"
+                  name="private"
                   isChecked={communityType === "private"}
                   onChange={onCommunityTypeChange}
                 >
@@ -159,7 +213,12 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
             >
               Cancel
             </Button>
-            <Button variant="solid" height="30px">
+            <Button
+              variant="solid"
+              height="30px"
+              onClick={handleCreateCommunity}
+              isLoading={loading}
+            >
               Create Community
             </Button>
           </ModalFooter>

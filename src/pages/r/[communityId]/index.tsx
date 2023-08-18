@@ -7,6 +7,7 @@ import React from "react";
 import { cp } from "fs";
 import NotFound from "@/Components/Community/NotFound";
 import Header from "@/Components/Community/Header";
+import PageContent from "@/Components/Layout/PageContent";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -17,6 +18,14 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   return (
     <>
       <Header communityData={communityData} />
+      <PageContent>
+        <>
+          <div>This is left one</div>
+        </>
+        <>
+          <div>This is right one</div>
+        </>
+      </PageContent>
     </>
   );
 };

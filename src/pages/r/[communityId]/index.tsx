@@ -6,6 +6,7 @@ import safeJsonStringify from "safe-json-stringify";
 import React from "react";
 import { cp } from "fs";
 import NotFound from "@/Components/Community/NotFound";
+import Header from "@/Components/Community/Header";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -13,7 +14,11 @@ type CommunityPageProps = {
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   if (!communityData) return <NotFound />;
-  return <div>Welcome to {communityData.id}</div>;
+  return (
+    <>
+      <Header communityData={communityData} />
+    </>
+  );
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

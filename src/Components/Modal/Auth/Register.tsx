@@ -5,7 +5,7 @@ import { authModalState } from "@/atoms/authModalAtom";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/firebase/clientApp";
 import { FIREBASE_ERRORS } from "@/firebase/errors";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { User } from "firebase/auth";
 type RegisterProps = {};
 
@@ -49,10 +49,8 @@ const Register: React.FC<RegisterProps> = () => {
   //console.log(user, authError);
 
   const createUserDocument = async (user: User) => {
-    await addDoc(
-      collection(firestore, "users"),
-      JSON.parse(JSON.stringify(user))
-    );
+    const userDocRef = doc(firestore, "users", user.uid);
+    await setDoc(userDocRef, JSON.parse(JSON.stringify(user)));
   };
 
   useEffect(() => {

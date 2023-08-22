@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsLink, BsMic } from "react-icons/bs";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { BiPoll } from "react-icons/bi";
-import { Flex, Icon } from "@chakra-ui/react";
+import { Flex, Icon, Alert, Text, AlertIcon } from "@chakra-ui/react";
 import TabItem from "./TabItem";
 import TextInputs from "./PostForm/TextInputs";
 import ImageUpload from "./PostForm/ImageUpload";
@@ -40,6 +40,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState("");
   const router = useRouter();
+  const [error, setError] = useState(false);
 
   //new post submit
   const handleCreatePost = async () => {
@@ -72,7 +73,10 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
       setLoading(false);
     } catch (error) {
       console.log("create post error", error);
+      setError(true);
     }
+    //redirect user back to the community page
+    router.back();
   };
 
   //handling text input data
@@ -127,6 +131,12 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
           />
         )}
       </Flex>
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <Text mr={2}>Error creating Post</Text>
+        </Alert>
+      )}
     </Flex>
   );
 };

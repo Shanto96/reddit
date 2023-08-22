@@ -11,7 +11,7 @@ export type Post = {
   body: string;
   numberOfComments: number;
   imageURL?: string;
-  createdAt?: Timestamp;
+  createdAt: Timestamp;
 };
 interface PostState {
   selectedPost: Post | null;

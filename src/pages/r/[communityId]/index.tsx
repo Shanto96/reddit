@@ -12,6 +12,7 @@ import CreatePostLink from "@/Components/Community/CreatePostLink";
 import Posts from "@/Components/Post/Posts";
 import { useSetRecoilState } from "recoil";
 import { useFocusEffect } from "@chakra-ui/react";
+import About from "@/Components/Community/About";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -37,7 +38,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
           <Posts communityData={communityData} />
         </>
         <>
-          <div>This is right one</div>
+          <About communityData={communityData} />
         </>
       </PageContent>
     </>

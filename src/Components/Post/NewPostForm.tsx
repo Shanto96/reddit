@@ -18,6 +18,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { firestore, storage } from "@/firebase/clientApp";
+import useUploadFile from "@/hooks/useSelectFile";
 
 type NewPostFormProps = {
   user: User;
@@ -38,7 +39,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({ title: "", body: "" });
   const [loading, setLoading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState("");
+  const { selectedFile, setSelectedFile, onSelectFile } = useUploadFile();
   const router = useRouter();
   const [error, setError] = useState(false);
 
@@ -90,17 +91,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
   };
 
   //handling file input data
-  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
-    if (event.target?.files[0]) {
-      reader.readAsDataURL(event.target.files[0]);
-    }
-    reader.onload = (readerEvent) => {
-      if (readerEvent.target.result) {
-        setSelectedFile(readerEvent.target?.result as string);
-      }
-    };
-  };
 
   return (
     <Flex direction="column" bg="white" borderRadius={4} mt={2}>
@@ -125,7 +115,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
         {selectedTab === "Images & Video" && (
           <ImageUpload
             selectedFile={selectedFile}
-            onSelectImage={onSelectImage}
+            onSelectImage={onSelectFile}
             setSelectedTab={setSelectedTab}
             setSelectedFile={setSelectedFile}
           />

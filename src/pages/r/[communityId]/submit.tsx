@@ -7,6 +7,7 @@ import { auth } from "@/firebase/clientApp";
 import { checkIsOnDemandRevalidate } from "next/dist/server/api-utils";
 import { communityState } from "./../../../atoms/communitiesAtom";
 import { useRecoilValue } from "recoil";
+import About from "@/Components/Community/About";
 type SubmitProps = {};
 
 const Submit: React.FC<SubmitProps> = () => {
@@ -21,7 +22,9 @@ const Submit: React.FC<SubmitProps> = () => {
         </Box>
         {user && <NewPostForm user={user} />}
       </>
-      <> </>
+      <>
+        <About communityData={communityState?.currentCommunity} />{" "}
+      </>
     </PageContent>
   );
 };

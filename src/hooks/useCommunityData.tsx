@@ -53,7 +53,7 @@ const useCommunityData = () => {
         ...prev,
         mySnippets: snippets as CommunitySnippet[],
       }));
-      console.log("My snippets are", snippets);
+
       setLoading(false);
     } catch (error) {}
   };

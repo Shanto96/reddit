@@ -23,7 +23,7 @@ const Submit: React.FC<SubmitProps> = () => {
         {user && <NewPostForm user={user} />}
       </>
       <>
-        <About communityData={communityState?.currentCommunity} />{" "}
+        {/* <About communityData={communityState?.currentCommunity} />{" "} */}
       </>
     </PageContent>
   );

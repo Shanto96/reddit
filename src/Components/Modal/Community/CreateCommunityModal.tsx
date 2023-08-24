@@ -97,7 +97,6 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     }
   };
 
-  console.log(user);
   return (
     <>
       <Modal isOpen={open} onClose={handleClose} size="lg">

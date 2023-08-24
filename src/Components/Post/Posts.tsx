@@ -46,7 +46,8 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
   useEffect(() => {
     getPosts();
   }, []);
-
+  console.log("Post Votes are", postStateValue.postVotes);
+  //console.log("Post ", post?.id);
   return (
     <>
       {loading ? (
@@ -56,8 +57,12 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
           {postStateValue.posts.map((post) => (
             <PostItem
               post={post}
+              key={post.id}
               userIsCreator={user?.uid === post.creatorId}
-              userVoteValue={1}
+              userVoteValue={
+                postStateValue.postVotes.find((vote) => vote.postId === post.id)
+                  ?.voteValue
+              }
               onVote={onVote}
               onDeletePost={onDeletePost}
               onSelectPost={onSelectPost}

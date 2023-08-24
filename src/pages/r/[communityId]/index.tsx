@@ -26,6 +26,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
       ...prev,
       currentCommunity: communityData,
     }));
+    console.log("current community is", communityData);
   }, []);
 
   if (!communityData) return <NotFound />;

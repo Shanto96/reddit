@@ -8,7 +8,7 @@ type AuthButtonsProps = {};
 const AuthButtons: React.FC<AuthButtonsProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const authModalStateValue = useSetRecoilState(authModalState);
-  console.log(authModalStateValue);
+
   return (
     <Flex align="center" justify="center">
       <Button

@@ -59,7 +59,12 @@ const SinglePost: React.FC<singlePostProps> = () => {
               onDeletePost={onDeletePost}
             />
           )}
-          <Comments />
+          {postStateValue.selectedPost && router.query.communityId && (
+            <Comments
+              selectedPost={postStateValue.selectedPost}
+              communityId={router.query.communityId as string}
+            />
+          )}
         </>
         <>
           {communityStateValue.currentCommunity && (

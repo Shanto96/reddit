@@ -12,20 +12,28 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const usePosts = () => {
   const [postStateValue, setPostSateValue] = useRecoilState(postState);
+  const router = useRouter();
   const [user] = useAuthState(auth);
   const currentCommunity = useRecoilValue(communityState).currentCommunity;
-  const onSelectPost = () => {};
+  const onSelectPost = (post: Post) => {
+    setPostSateValue((prev) => ({
+      ...prev,
+      selectedPost: post,
+    }));
+    router.push(`/r/${post.communityId}/comment/${post.id}`);
+  };
   const onDeletePost = async (post: Post): Promise<boolean> => {
     try {
       //check and delete if the post has an image
       if (post.imageURL) {
-        const imageRef = ref(storage, `posts/${post.id}/image`);
+        const imageRef = ref(storage, `post/${post.id}/image`);
         await deleteObject(imageRef);
       }
 
@@ -41,11 +49,18 @@ const usePosts = () => {
 
       return true;
     } catch (error) {
+      console.log("post delete error", error);
       return false;
     }
   };
 
-  const onVote = async (post: Post, vote: number, communityId: String) => {
+  const onVote = async (
+    event: React.MouseEvent<SVGAElement, MouseEvent>,
+    post: Post,
+    vote: number,
+    communityId: String
+  ) => {
+    event.stopPropagation();
     try {
       const { voteStatus } = post;
       const existingVote = postStateValue.postVotes.find(
@@ -122,6 +137,13 @@ const usePosts = () => {
         posts: updatedPosts,
         postVotes: updatedPostVotes,
       }));
+
+      if (postStateValue.selectedPost?.id === post.id) {
+        setPostSateValue((prev) => ({
+          ...prev,
+          selectedPost: updatedPost,
+        }));
+      }
     } catch (error) {
       console.log("Error in on vote", error);
     }
@@ -151,6 +173,15 @@ const usePosts = () => {
 
     getCommunityPostVotes(currentCommunity.id);
   }, [currentCommunity?.id, user]);
+
+  useEffect(() => {
+    if (!user) {
+      setPostSateValue((prev) => ({
+        ...prev,
+        postVotes: [],
+      }));
+    }
+  }, [user]);
   return {
     postStateValue,
     setPostSateValue,

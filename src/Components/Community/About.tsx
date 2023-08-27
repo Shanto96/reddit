@@ -117,7 +117,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
               Create a Post
             </Button>
           </Link>
-          {user?.uid === communityData.creatorId && (
+          {user?.uid === communityData?.creatorId && (
             <>
               <Divider />
               <Stack spacing={1} fontSize="10pt">
@@ -131,9 +131,9 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
                   >
                     Change Image
                   </Text>
-                  {selectedFile || communityData.imageUrl ? (
+                  {selectedFile || communityData?.imageUrl ? (
                     <>
-                      {loadImage && !communityData.imageUrl && (
+                      {loadImage && !communityData?.imageUrl && (
                         <SkeletonCircle size="10" />
                       )}
                       <Image

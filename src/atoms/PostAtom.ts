@@ -22,7 +22,7 @@ export type PostVote = {
   voteValue: number;
 };
 interface PostState {
-  selectedPost: Post | null;
+  selectedPost?: Post | null;
   posts: Post[];
   postVotes: PostVote[];
 }
